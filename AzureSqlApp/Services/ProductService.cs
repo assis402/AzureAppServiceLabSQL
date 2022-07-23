@@ -3,27 +3,20 @@ using Microsoft.Data.SqlClient;
 
 namespace AzureSqlApp.Services
 {
-    public class ProductService
+    public class ProductService : IProductService
     {
-        static readonly string db_source = "assissql.database.windows.net";
-        static readonly string db_user = "assis";
-        static readonly string db_password = "32833113Mt32833113";
-        static readonly string db_database = "assissql";
+        readonly IConfiguration _configuration;
 
-        static SqlConnection GetConnection()
+        public ProductService(IConfiguration configuration)
         {
-            var builder = new SqlConnectionStringBuilder
-            {
-                DataSource = db_source,
-                UserID = db_user,
-                Password = db_password,
-                InitialCatalog = db_database
-            };
+            _configuration = configuration;
+        }
 
-            var key = "SQLAZURECONNSTR_DB_CONNECT";
-            var connectionString = Environment.GetEnvironmentVariable(key);
-
-            return new SqlConnection(connectionString);
+        SqlConnection GetConnection()
+        {
+            //var key = "SQLAZURECONNSTR_DB_CONNECT";
+            //var connectionString = Environment.GetEnvironmentVariable(key);
+            return new SqlConnection(_configuration.GetConnectionString("DB_CONNECT"));
         }
 
         public List<Product> GetProducts()

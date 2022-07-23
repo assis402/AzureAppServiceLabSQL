@@ -6,12 +6,11 @@ namespace AzureSqlApp.Pages
 {
     public class IndexModel : PageModel
     {
+        readonly IProductService _productService;
         public List<Product> Products;
 
-        public void OnGet()
-        {
-            var productService = new ProductService();
-            Products = productService.GetProducts();
-        }
+        public IndexModel(IProductService productService) => _productService = productService;
+
+        public void OnGet() => Products = _productService.GetProducts();
     }
 }
