@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.0.0-preview3.22168.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="5.2.0-preview" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.0.0-preview" />
   </ItemGroup>
 
 </Project>
