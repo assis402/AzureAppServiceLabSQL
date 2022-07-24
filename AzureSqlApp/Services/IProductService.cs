@@ -4,7 +4,7 @@ namespace AzureSqlApp.Services
 {
     public interface IProductService
     {
-        List<Product> GetProducts();
+        Task<List<Product>> GetProductsAsync();
         Task<bool> IsBeta();
     }
 }

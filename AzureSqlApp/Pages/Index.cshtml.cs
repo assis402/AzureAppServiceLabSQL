@@ -15,7 +15,7 @@ namespace AzureSqlApp.Pages
         public async Task OnGetAsync() 
         {
             IsBeta = await _productService.IsBeta();
-            Products = _productService.GetProducts();
+            Products = await _productService.GetProductsAsync();
         }
     }
 }

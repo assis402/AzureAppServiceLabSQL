@@ -1,6 +1,7 @@
 ﻿using AzureSqlApp.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.FeatureManagement;
+using System.Text.Json;
 
 namespace AzureSqlApp.Services
 {
@@ -27,35 +28,18 @@ namespace AzureSqlApp.Services
             return new SqlConnection(_configuration["DB_CONNECT"]);
         }
 
-        public List<Product> GetProducts()
+        public async Task<List<Product>> GetProductsAsync()
         {
-            SqlConnection connection = GetConnection();
+            var functionUrl = "{functionUrl}";
 
-            var productList = new List<Product>();
-            var statement = "SELECT ProductID, ProductName, Quantity FROM Products";
-
-            connection.Open();
-
-            var command = new SqlCommand(statement, connection);
-
-            using (var reader = command.ExecuteReader())
+            using(var client = new HttpClient())
             {
-                while (reader.Read())
-                {
-                    var product = new Product()
-                    {
-                        ProductId = reader.GetInt32(0),
-                        ProductName = reader.GetString(1),
-                        Quantity = reader.GetInt32(2)
-                    };
+                var response = await client.GetAsync(functionUrl);
 
-                    productList.Add(product);
-                }
+                var content = await response.Content.ReadAsStringAsync();
+
+                return JsonSerializer.Deserialize<List<Product>>(content) ?? new List<Product>();
             }
-
-            connection.Close();
-
-            return productList;
         }
     }
 }
